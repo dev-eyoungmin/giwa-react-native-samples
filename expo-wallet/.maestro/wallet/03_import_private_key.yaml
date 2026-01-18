@@ -1,0 +1,47 @@
+appId: ${APP_ID}
+name: Import Wallet with Private Key
+---
+# Test: Import wallet using private key
+
+# Ensure app is launched with clean state
+- launchApp:
+    clearState: true
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Tap on Import Private Key
+- tapOn: "Import Private Key"
+
+# Wait for modal
+- extendedWaitUntil:
+    visible: "Import Private Key"
+    timeout: 3000
+
+# Verify modal content
+- assertVisible: "Enter your private key"
+
+# Enter a test private key (well-known test key)
+# This key corresponds to the first test account in many development environments
+- inputText: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+
+# Tap Import button
+- tapOn: "Import"
+
+# Wait for success
+- extendedWaitUntil:
+    visible: "Wallet imported successfully"
+    timeout: 10000
+
+# Dismiss success alert
+- tapOn: "OK"
+
+# Verify wallet is imported
+- extendedWaitUntil:
+    visible: "Wallet Address"
+    timeout: 3000
+
+# Verify address is displayed
+- assertVisible: "0x"

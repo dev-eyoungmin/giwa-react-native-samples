@@ -1,0 +1,59 @@
+appId: ${APP_ID}
+name: Testnet Faucet
+---
+# Test: Faucet UI and functionality
+
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Navigate to Faucet tab
+- tapOn: "Faucet"
+
+# Check for various states
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "Testnet Faucet"
+        - "Faucet Not Available"
+        - "Please create a wallet first"
+    timeout: 5000
+
+# Skip if no wallet
+- runFlow:
+    when:
+      visible: "Please create a wallet first"
+    commands:
+      - assertVisible: "Go to the Wallet tab to get started"
+
+# If faucet not available (mainnet)
+- runFlow:
+    when:
+      visible: "Faucet Not Available"
+    commands:
+      - assertVisible: "The faucet is only available on testnet"
+
+# If faucet is available (testnet)
+- runFlow:
+    when:
+      visible: "Testnet Faucet"
+    commands:
+      - assertVisible: "Get free testnet ETH"
+      - assertVisible: "Your Wallet"
+      - assertVisible: "Copy Address"
+      - assertVisible: "Current Balance"
+      - assertVisible: "Request Testnet ETH"
+      - assertVisible: "Open Faucet Website"
+      - assertVisible: "Refresh Balance"
+      - assertVisible: "How to use the faucet"
+      - assertVisible: "About Testnet ETH"
+
+      # Test copy address functionality
+      - tapOn: "Copy Address"
+      - extendedWaitUntil:
+          visible: "Copied"
+          timeout: 3000
+      - tapOn: "OK"

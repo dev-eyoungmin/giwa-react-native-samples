@@ -1,0 +1,56 @@
+appId: ${APP_ID}
+name: GIWA ID Resolution
+---
+# Test: GIWA ID (ENS-based naming) functionality
+
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Navigate to GIWA ID tab
+- tapOn: "GIWA ID"
+
+# Check for various states
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "GIWA ID"
+        - "GIWA ID Not Available"
+        - "Please create a wallet first"
+    timeout: 5000
+
+# Skip if no wallet
+- runFlow:
+    when:
+      visible: "Please create a wallet first"
+    commands:
+      - assertVisible: "Go to the Wallet tab to get started"
+
+# If GIWA ID not available
+- runFlow:
+    when:
+      visible: "GIWA ID Not Available"
+    commands:
+      - assertVisible: "This feature is not available"
+
+# If GIWA ID is available
+- runFlow:
+    when:
+      visible: "ENS-based naming"
+    commands:
+      - assertVisible: "Your GIWA ID"
+      - assertVisible: "Lookup"
+      - assertVisible: "Resolve GIWA ID"
+      - assertVisible: "Reverse Lookup"
+      - assertVisible: "About GIWA ID"
+
+      # Test GIWA ID input
+      - tapOn: "e.g., alice.giwa"
+      - inputText: "test.giwa"
+
+      # Verify buttons are present
+      - assertVisible: "Resolve"
+      - assertVisible: "Check Availability"

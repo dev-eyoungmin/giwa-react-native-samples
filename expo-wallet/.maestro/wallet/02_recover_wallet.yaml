@@ -1,0 +1,46 @@
+appId: ${APP_ID}
+name: Recover Wallet with Mnemonic
+---
+# Test: Recover an existing wallet using mnemonic phrase
+
+# Ensure app is launched with clean state
+- launchApp:
+    clearState: true
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Tap on Recover with Mnemonic
+- tapOn: "Recover with Mnemonic"
+
+# Wait for modal
+- extendedWaitUntil:
+    visible: "Recover Wallet"
+    timeout: 3000
+
+# Verify modal content
+- assertVisible: "Enter your 12-word recovery phrase"
+
+# Enter test mnemonic
+- inputText: "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+
+# Tap Recover button
+- tapOn: "Recover"
+
+# Wait for success
+- extendedWaitUntil:
+    visible: "Wallet recovered successfully"
+    timeout: 10000
+
+# Dismiss success alert
+- tapOn: "OK"
+
+# Verify wallet is recovered and shows expected address
+- extendedWaitUntil:
+    visible: "Wallet Address"
+    timeout: 3000
+
+# The test mnemonic "abandon...about" produces this address
+- assertVisible: "0x9858EfFD232B4033E47d90003D41EC34EcaEda94"

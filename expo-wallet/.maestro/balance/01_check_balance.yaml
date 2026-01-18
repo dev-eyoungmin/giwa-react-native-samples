@@ -1,0 +1,51 @@
+appId: ${APP_ID}
+name: Check ETH Balance
+---
+# Test: Navigate to Balance tab and verify balance display
+
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Navigate to Balance tab
+- tapOn: "Balance"
+
+# Check if wallet exists
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "ETH Balance"
+        - "Please create a wallet first"
+    timeout: 5000
+
+# If no wallet, skip this test
+- runFlow:
+    when:
+      visible: "Please create a wallet first"
+    commands:
+      - assertVisible: "Go to the Wallet tab to get started"
+      # Test passes - correct behavior when no wallet
+
+# If wallet exists, verify balance display
+- runFlow:
+    when:
+      visible: "ETH Balance"
+    commands:
+      - assertVisible: "Available Balance"
+      - assertVisible: "ETH"
+      - assertVisible: "Refresh Balance"
+      - assertVisible: "Wallet Address"
+      - assertVisible: "About ETH Balance"
+
+# Test refresh functionality
+- runFlow:
+    when:
+      visible: "Refresh Balance"
+    commands:
+      - tapOn: "Refresh Balance"
+      - extendedWaitUntil:
+          visible: "ETH"
+          timeout: 10000

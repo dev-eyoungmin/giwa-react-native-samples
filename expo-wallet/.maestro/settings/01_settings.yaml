@@ -1,0 +1,62 @@
+appId: ${APP_ID}
+name: Settings and Network Info
+---
+# Test: Settings screen with network configuration and SDK status
+
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+
+# Wait for settings screen
+- extendedWaitUntil:
+    visible: "Network configuration"
+    timeout: 5000
+
+# Verify main sections
+- assertVisible: "Network Status"
+- assertVisible: "Feature Availability"
+- assertVisible: "Biometric Authentication"
+- assertVisible: "RPC Endpoints"
+- assertVisible: "SDK Information"
+
+# Verify network status details
+- assertVisible: "Network"
+- assertVisible: "Name"
+- assertVisible: "Chain ID"
+- assertVisible: "Type"
+- assertVisible: "Status"
+
+# Verify feature availability section
+- assertVisible: "Bridge (L1↔L2)"
+- assertVisible: "Flashblocks"
+- assertVisible: "GIWA ID (ENS)"
+- assertVisible: "Dojang (Attestation)"
+- assertVisible: "Faucet"
+
+# Verify biometric section
+- assertVisible: "Hardware Available"
+- assertVisible: "Enrolled"
+- assertVisible: "Refresh"
+
+# Test show/hide RPC endpoints
+- tapOn: "Show"
+
+# Verify endpoints are shown
+- extendedWaitUntil:
+    visible: "RPC URL"
+    timeout: 3000
+- assertVisible: "Flashblocks RPC"
+- assertVisible: "Flashblocks WebSocket"
+- assertVisible: "Block Explorer"
+
+# Hide endpoints
+- tapOn: "Hide"
+
+# Verify SDK info section
+- assertVisible: "GIWA React Native Wallet SDK"
