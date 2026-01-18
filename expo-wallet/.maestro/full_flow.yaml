@@ -1,0 +1,112 @@
+appId: ${APP_ID}
+name: Full SDK Feature Test Flow
+---
+# Comprehensive E2E test that exercises all SDK features in sequence
+# This test creates a wallet and navigates through all tabs
+
+# Step 1: Create Wallet
+- launchApp:
+    clearState: true
+
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+- assertVisible: "Create New Wallet"
+- tapOn: "Create New Wallet"
+
+- extendedWaitUntil:
+    visible: "Save Your Recovery Phrase"
+    timeout: 5000
+
+- tapOn: "I've Saved It"
+
+- extendedWaitUntil:
+    visible: "Wallet Address"
+    timeout: 3000
+
+# Step 2: Check Balance Tab
+- tapOn: "Balance"
+- extendedWaitUntil:
+    visible: "ETH Balance"
+    timeout: 5000
+- assertVisible: "Available Balance"
+- assertVisible: "Refresh Balance"
+
+# Step 3: Check Send Tab
+- tapOn: "Send"
+- extendedWaitUntil:
+    visible: "Send ETH"
+    timeout: 5000
+- assertVisible: "Recipient Address"
+- assertVisible: "Amount (ETH)"
+
+# Step 4: Check Tokens Tab
+- tapOn: "Tokens"
+- extendedWaitUntil:
+    visible: "ERC-20 Tokens"
+    timeout: 5000
+- assertVisible: "Add Token"
+- assertVisible: "Your Tokens"
+
+# Step 5: Check Bridge Tab
+- tapOn: "Bridge"
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "L2 to L1 Bridge"
+        - "Bridge Not Available"
+    timeout: 5000
+
+# Step 6: Check Flashblocks Tab
+- tapOn: "Flash"
+- extendedWaitUntil:
+    visible: "Flashblocks"
+    timeout: 5000
+- assertVisible: "~200ms preconfirmation"
+- assertVisible: "Avg Latency"
+
+# Step 7: Check GIWA ID Tab
+- tapOn: "GIWA ID"
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "ENS-based naming"
+        - "GIWA ID Not Available"
+    timeout: 5000
+
+# Step 8: Check Faucet Tab
+- tapOn: "Faucet"
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "Testnet Faucet"
+        - "Faucet Not Available"
+    timeout: 5000
+
+# Step 9: Check Dojang Tab
+- tapOn: "Dojang"
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "EAS-based attestation"
+        - "Dojang Not Available"
+    timeout: 5000
+
+# Step 10: Check Settings Tab
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Network configuration"
+    timeout: 5000
+- assertVisible: "Network Status"
+- assertVisible: "Feature Availability"
+- assertVisible: "SDK Information"
+
+# Step 11: Return to Wallet and verify wallet still exists
+- tapOn: "Wallet"
+- extendedWaitUntil:
+    visible: "Wallet Address"
+    timeout: 5000
+- assertVisible: "Export Credentials"
+
+# Full flow test completed successfully!

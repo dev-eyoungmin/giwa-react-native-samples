@@ -1,0 +1,45 @@
+appId: ${APP_ID}
+name: ERC-20 Token Management
+---
+# Test: Add and manage ERC-20 tokens
+
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Navigate to Tokens tab
+- tapOn: "Tokens"
+
+# Check if wallet exists
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "ERC-20 Tokens"
+        - "Please create a wallet first"
+    timeout: 5000
+
+# Skip if no wallet
+- runFlow:
+    when:
+      visible: "Please create a wallet first"
+    commands:
+      - assertVisible: "Go to the Wallet tab to get started"
+
+# If wallet exists, test token UI
+- runFlow:
+    when:
+      visible: "ERC-20 Tokens"
+    commands:
+      - assertVisible: "Add Token"
+      - assertVisible: "Your Tokens"
+      - assertVisible: "No tokens added yet"
+
+      # Test add token input
+      - tapOn: "Token contract address (0x...)"
+      - inputText: "0x0000000000000000000000000000000000000000"
+
+      # Verify Add Token button is present
+      - assertVisible: "Add Token"

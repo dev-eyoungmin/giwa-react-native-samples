@@ -1,0 +1,56 @@
+appId: ${APP_ID}
+name: Send ETH Transaction
+---
+# Test: Send ETH to another address
+
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Navigate to Send tab
+- tapOn: "Send"
+
+# Check if wallet exists
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "Send ETH"
+        - "Please create a wallet first"
+    timeout: 5000
+
+# Skip if no wallet
+- runFlow:
+    when:
+      visible: "Please create a wallet first"
+    commands:
+      - assertVisible: "Go to the Wallet tab to get started"
+
+# If wallet exists, test send form
+- runFlow:
+    when:
+      visible: "Send ETH"
+    commands:
+      - assertVisible: "Available Balance"
+      - assertVisible: "Recipient Address"
+      - assertVisible: "Amount (ETH)"
+      - assertVisible: "Transaction Tips"
+
+      # Enter recipient address
+      - tapOn:
+          text: "Recipient Address"
+          index: 0
+      - tapOn: "0x..."
+      - inputText: "0x0000000000000000000000000000000000000001"
+
+      # Enter amount
+      - tapOn:
+          text: "Amount (ETH)"
+          index: 0
+      - tapOn: "0.0"
+      - inputText: "0.001"
+
+      # Verify form is filled (don't actually send in test)
+      - assertVisible: "Send ETH"

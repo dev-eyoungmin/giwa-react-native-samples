@@ -1,0 +1,51 @@
+appId: ${APP_ID}
+name: L1-L2 Bridge Operations
+---
+# Test: Bridge UI and functionality
+
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Navigate to Bridge tab
+- tapOn: "Bridge"
+
+# Check for various states
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "L2 to L1 Bridge"
+        - "Bridge Not Available"
+        - "Please create a wallet first"
+    timeout: 5000
+
+# Skip if no wallet
+- runFlow:
+    when:
+      visible: "Please create a wallet first"
+    commands:
+      - assertVisible: "Go to the Wallet tab to get started"
+
+# If bridge not available (testnet/mainnet contracts not deployed)
+- runFlow:
+    when:
+      visible: "Bridge Not Available"
+    commands:
+      - assertVisible: "This feature is not available"
+
+# If bridge is available
+- runFlow:
+    when:
+      visible: "L2 to L1 Bridge"
+    commands:
+      - assertVisible: "Withdraw ETH from GIWA Chain"
+      - assertVisible: "Estimated Time"
+      - assertVisible: "L2 Balance"
+      - assertVisible: "Amount (ETH)"
+      - assertVisible: "Recipient on L1"
+      - assertVisible: "Withdraw to L1"
+      - assertVisible: "Pending Withdrawals"
+      - assertVisible: "Important"

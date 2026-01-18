@@ -1,0 +1,25 @@
+# Maestro E2E Test Configuration
+# GIWA React Native Wallet Test App
+
+# App configuration
+appId: com.giwa.wallet.expo
+name: GIWA Wallet E2E Tests
+
+# Default flow settings
+flows:
+  - wallet/*.yaml
+  - balance/*.yaml
+  - send/*.yaml
+  - tokens/*.yaml
+  - bridge/*.yaml
+  - flashblocks/*.yaml
+  - giwa-id/*.yaml
+  - faucet/*.yaml
+  - dojang/*.yaml
+  - settings/*.yaml
+
+# Environment variables
+env:
+  TEST_MNEMONIC: "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+  TEST_ADDRESS: "0x9858EfFD232B4033E47d90003D41EC34EcaEda94"
+  TEST_RECIPIENT: "0x0000000000000000000000000000000000000001"

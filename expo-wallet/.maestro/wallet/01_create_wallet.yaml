@@ -1,0 +1,45 @@
+appId: com.leeyoungmin.giwa-wallet-expo
+name: Create New Wallet
+---
+# Test: Create a new wallet and verify mnemonic display
+
+# Ensure app is launched
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Verify initial state (no wallet)
+- assertVisible: "Create or import a wallet to get started"
+- assertVisible: "Create New Wallet"
+- assertVisible: "Recover with Mnemonic"
+- assertVisible: "Import Private Key"
+
+# Create new wallet
+- tapOn: "Create New Wallet"
+
+# Wait for wallet creation
+- extendedWaitUntil:
+    visible: "Save Your Recovery Phrase"
+    timeout: 5000
+
+# Verify mnemonic modal appears
+- assertVisible: "Write down these 12 words in order"
+- assertVisible: "Copy to Clipboard"
+- assertVisible: "I've Saved It"
+
+# Confirm mnemonic saved
+- tapOn: "I've Saved It"
+
+# Verify wallet is created and address is displayed
+- extendedWaitUntil:
+    visible: "Wallet Address"
+    timeout: 3000
+
+- assertVisible: "0x"
+- assertVisible: "Export Credentials"
+- assertVisible: "Delete Wallet"
+
+# Test passed - wallet successfully created

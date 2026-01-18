@@ -1,0 +1,60 @@
+appId: ${APP_ID}
+name: Flashblocks Fast Transactions
+---
+# Test: Flashblocks UI and toggle functionality
+
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Navigate to Flashblocks tab
+- tapOn: "Flash"
+
+# Check if wallet exists
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "Flashblocks"
+        - "Please create a wallet first"
+    timeout: 5000
+
+# Skip if no wallet
+- runFlow:
+    when:
+      visible: "Please create a wallet first"
+    commands:
+      - assertVisible: "Go to the Wallet tab to get started"
+
+# If wallet exists, test flashblocks UI
+- runFlow:
+    when:
+      visible: "Flashblocks"
+    commands:
+      - assertVisible: "~200ms preconfirmation"
+      - assertVisible: "Avg Latency"
+      - assertVisible: "Preconfirmations"
+      - assertVisible: "Available Balance"
+      - assertVisible: "Recipient Address"
+      - assertVisible: "Amount (ETH)"
+      - assertVisible: "How Flashblocks Works"
+
+      # Test toggle - enable flashblocks
+      - tapOn:
+          id: "flashblocks-toggle"
+          optional: true
+
+      # Verify flashblocks state
+      - runFlow:
+          when:
+            visible: "Fast transactions enabled"
+          commands:
+            - assertVisible: "Send with Flashblocks"
+
+      - runFlow:
+          when:
+            visible: "Enable for faster transactions"
+          commands:
+            - assertVisible: "Enable Flashblocks First"

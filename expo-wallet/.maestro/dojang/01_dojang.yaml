@@ -1,0 +1,59 @@
+appId: ${APP_ID}
+name: Dojang Attestation
+---
+# Test: Dojang (EAS-based attestation) UI and functionality
+
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "GIWA Wallet"
+    timeout: 10000
+
+# Navigate to Dojang tab
+- tapOn: "Dojang"
+
+# Check for various states
+- extendedWaitUntil:
+    visible:
+      anyOf:
+        - "EAS-based attestation"
+        - "Dojang Not Available"
+        - "Please create a wallet first"
+    timeout: 5000
+
+# Skip if no wallet
+- runFlow:
+    when:
+      visible: "Please create a wallet first"
+    commands:
+      - assertVisible: "Go to the Wallet tab to get started"
+
+# If dojang not available
+- runFlow:
+    when:
+      visible: "Dojang Not Available"
+    commands:
+      - assertVisible: "This feature is not available"
+
+# If dojang is available
+- runFlow:
+    when:
+      visible: "EAS-based attestation"
+    commands:
+      - assertVisible: "Attestation Lookup"
+      - assertVisible: "Enter an attestation UID"
+      - assertVisible: "Get Details"
+      - assertVisible: "Check Validity"
+      - assertVisible: "Get Verified Balance"
+      - assertVisible: "Address Verification"
+      - assertVisible: "Check Verification"
+      - assertVisible: "About Dojang"
+
+      # Test attestation UID input
+      - tapOn: "Attestation UID (0x...)"
+      - inputText: "0x0000000000000000000000000000000000000000000000000000000000000001"
+
+      # Verify buttons are present
+      - assertVisible: "Get Details"
+      - assertVisible: "Check Validity"
